@@ -5,10 +5,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>ㅇㅣ해리의 웹 나라!</title>
-	<link rel="stylesheet" type="text/css" href="assets/style/style.css" />
+	<title>ㅇㅣ해리의 웹 나라</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-	<jsp:include page="contents/index-contents.jsp" flush="false"/>
+    
+    <div class="center-contents">
+      
+
+    </div>
+    <script src="index.js"></script>
+
   </body>
 </html>

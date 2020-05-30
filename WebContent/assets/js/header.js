@@ -12,7 +12,3 @@ toggle.addEventListener('click', function() {
     toggle.innerHTML = toggle_open_text;
   }
 }, false);
-
-setTimeout(function(){
-	nav.classList.toggle('open');	
-}, 800);

@@ -5,10 +5,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>ㅇㅣ해리의 웹 나라!</title>
+	<title>ㅇㅣ해리의 웹 나라 - 404 ERROR</title>
 	<link rel="stylesheet" type="text/css" href="assets/style/style.css" />
   </head>
   <body>
-	<jsp:include page="contents/index-contents.jsp" flush="false"/>
+	<%@ include file="contents/404-contents.jsp" %>
   </body>
 </html>
