@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" session="true"%>
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="icon" href="favicon.ico">
+ 
+<div class="header">
+	<div class="logo">
+		<a class="logo-title" href="/HelloWeb/index.jsp">ㅇㅣ해리의 웹 나라</a>
+	</div>
+	<nav class="top-right">
+		<a class="disc l1"
+			<%if(request.getSession().getAttribute("id")==null) {%>
+			href="/HelloWeb/pages/loginForm.jsp">
+			<div>Log in</div> 
+			<%} else { %> 
+			href="/HelloWeb/LogoutAction">
+			<div>Log out</div> 
+			<%} %>
+		</a> <a class="disc l2"
+			<%if(request.getSession().getAttribute("id")==null) {%>
+			href="/HelloWeb/pages/signupForm.jsp">
+			<div>Sign up</div> 
+			<%} else { %>
+			href="/HelloWeb/pages/memberOnly.jsp">
+			<div>비밀의 방</div>
+			<%} %>
+		</a> <a class="disc l3" href="/HelloWeb/pages/board.jsp">
+			<div>Board</div>
+		</a> <a class="disc l4" href="/HelloWeb/pages/lecture.jsp">
+			<div>Lecture</div>
+		</a> <a class="disc l5" href="/HelloWeb/pages/fortune.jsp">
+			<div>Fortune</div>
+		</a> <a class="disc l6 toggle"> Menu </a>
+	</nav>
+</div>
+<script src="../assets/js/header.js"></script>
