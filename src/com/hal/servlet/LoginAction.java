@@ -43,12 +43,12 @@ public class LoginAction extends HttpServlet {
 		//먼저 널검사.
 		if(id == null || id==null ) {
 			System.out.println("로긴액션1");
-			response.sendRedirect("loginForm.jsp?code="+loginFailed+"&from="+fromPage);
+			response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+"&from="+fromPage);
 		} else {
 			//걸릴 확률 높아보이는 것부터 먼저 검사. 틀렸을때 or
 			if(!id.equals("asdf") || !pwd.equals("1234")) {
 				System.out.println("로긴액션2");
-				response.sendRedirect("loginForm.jsp?code="+loginFailed+"&from="+fromPage);				
+				response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+"&from="+fromPage);				
 			} else {
 				//로그인 성공시 왔던 곳으로 돌려보냄
 				System.out.println("로긴액션3");

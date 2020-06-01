@@ -5,6 +5,7 @@ String id = (String) session.getAttribute("id"); %>
 <!DOCTYPE html>
 <html lang="ko">
   <head>
+   	<link rel="shortcut icon" href="/favicon.ico" type="image/icon">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>ㅇㅣ해리의 웹 나라 - 강의실</title>

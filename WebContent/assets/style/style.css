@@ -289,3 +289,26 @@ nav.top-right {
   text-decoration: none;
   color: white;
 }
+
+button {
+  font-family: "GmarketSansMedium";
+  border: none;
+  border-radius: 4px;
+  background-size: 500% 100%;
+  -webkit-transition: all ease 0.3s;
+  -moz-transition: all ease 0.3s;
+  transition: all ease 0.3s;
+  color: #fff;
+  font-size: 20px;
+  width: 140px;
+  height: 40px;
+  margin-bottom: 10px;
+  background: rgb(255, 0, 0);
+  cursor: pointer;
+}
+
+textarea:focus,
+input:focus,
+button:focus {
+  outline: 0;
+}

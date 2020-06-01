@@ -8,7 +8,7 @@
 				<h1 class="fortune__title">오늘 나의 운세는?</h1>
 			</div>
 
-			<form class="form" action="fortuneResult.jsp" method="post">
+			<form class="form" action="../pages/fortuneResult.jsp" method="post">
 				<div class="form__group">
 					<input type="text" placeholder="이름" name="name" class="form__input"
 						required />
