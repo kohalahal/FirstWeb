@@ -1,34 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" session="true"%>
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="icon" href="favicon.ico">
+<%
+String id = (String) session.getAttribute("id");
+boolean loggedIn = id==null? false:true;
+%>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="icon" href="../favicon.ico">
  
 <div class="header">
 	<div class="logo">
-		<a class="logo-title" href="/HelloWeb/index.jsp">ㅇㅣ해리의 웹 나라</a>
+		<a class="logo-title" href="index.jsp">ㅇㅣ해리의 웹 나라</a>
 	</div>
-	<nav class="top-right">
-		<a class="disc l1"
-			<%if(request.getSession().getAttribute("id")==null) {%>
-			href="/HelloWeb/pages/loginForm.jsp">
-			<div>Log in</div> 
-			<%} else { %> 
-			href="/HelloWeb/LogoutAction">
-			<div>Log out</div> 
-			<%} %>
-		</a> <a class="disc l2"
-			<%if(request.getSession().getAttribute("id")==null) {%>
-			href="/HelloWeb/pages/signupForm.jsp">
-			<div>Sign up</div> 
-			<%} else { %>
-			href="/HelloWeb/pages/memberOnly.jsp">
-			<div>비밀의 방</div>
-			<%} %>
-		</a> <a class="disc l3" href="/HelloWeb/pages/board.jsp">
+	<nav class="top-right">		
+			<%=loggedIn? "<a class=\"disc l1\" href=\"../LogoutAction\"><div>Log out</div></a>":
+				"<a class=\"disc l1\" href=\"loginForm.jsp\"><div>Log in</div></a>"%>
+			<%=loggedIn? "<a class=\"disc l2\" href=\"myInfo.jsp\"><div>나의 정보</div></a>":
+				"<a class=\"disc l2\" href=\"signupForm.jsp\"><div>Sign up</div></a>"%>
+		</a> <a class="disc l3" href="board.jsp">
 			<div>Board</div>
-		</a> <a class="disc l4" href="/HelloWeb/pages/lecture.jsp">
+		</a> <a class="disc l4" href="lecture.jsp">
 			<div>Lecture</div>
-		</a> <a class="disc l5" href="/HelloWeb/pages/fortune.jsp">
+		</a> <a class="disc l5" href="fortune.jsp">
 			<div>Fortune</div>
 		</a> <a class="disc l6 toggle"> Menu </a>
 	</nav>

@@ -33,22 +33,22 @@ public class LoginAction extends HttpServlet {
 		String pwd = request.getParameter("pwd");
 		
 		//코드로 어디서왔는지 받아둠
-		String fromPage = request.getParameter("from")==null?"":request.getParameter("from");
-		System.out.println("로긴액션:프롬페이지:"+fromPage);
+		
+		String sendTo = request.getParameter("to");
+		System.out.println("로긴액션:프롬페이지:"+sendTo);
 		
 		//오류코드. 코드가많아지면 이넘을쓰면될랑가?
 		final int loginFailed = 1;
-		final int loginRequired = 3;
 		
 		//먼저 널검사.
 		if(id == null || id==null ) {
 			System.out.println("로긴액션1");
-			response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+"&from="+fromPage);
+			response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+(sendTo.length()==0?"":"&to="+sendTo));
 		} else {
 			//걸릴 확률 높아보이는 것부터 먼저 검사. 틀렸을때 or
 			if(!id.equals("asdf") || !pwd.equals("1234")) {
 				System.out.println("로긴액션2");
-				response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+"&from="+fromPage);				
+				response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+(sendTo.length()==0?"":"&to="+sendTo));				
 			} else {
 				//로그인 성공시 왔던 곳으로 돌려보냄
 				System.out.println("로긴액션3");
@@ -58,7 +58,7 @@ public class LoginAction extends HttpServlet {
 				}
 				request.getSession().setAttribute("id", "asdf");
 				System.out.println("로긴액션 세션아이디:"+request.getSession().getAttribute("id"));
-				response.sendRedirect(fromPage);
+				response.sendRedirect("pages/"+sendTo+".jsp");
 			}		
 		}
 	}

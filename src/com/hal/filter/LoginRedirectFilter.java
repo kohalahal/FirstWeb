@@ -1,6 +1,9 @@
 package com.hal.filter;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Map;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -40,28 +43,32 @@ public class LoginRedirectFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 	    HttpServletResponse response = (HttpServletResponse) res;
 	    
-	    //로그인페이지 이전단계. 로그인 성공 후에 어디로보낼지를 결정하는 필터
-	    
-	    //어디서 왔는지 파라미터로 받음
-		String fromPage = request.getParameter("from");
-		System.out.println("로긴리다이렉트필터프롬페이지1: "+fromPage);
+	    //로그인페이지 이전단계에서, 로그인 성공 후에 어디로보낼지를 결정하는 필터	
+	    //페러미터에서 받아서 있으면 ㅇㅋ
+	    //없으면 만들어줌.
+	    String sendTo = null;	    
 
-		
-		//먼저 널검사
-		if(fromPage==null || fromPage.equals("")) {
-			if(request.getHeader("referer")==null) {				
-				fromPage = "/HelloWeb/index.jsp";
-			} else {
-			fromPage = request.getHeader("referer").substring("http://localhost:8080/HelloWeb/".length());
-			System.out.println("로긴리다이렉트 레퍼러섭스트링:"+fromPage);
-			}
-		}
-		//로그인 성공하고나서 만약에 로그인폼으로 돌려보내면 index로 가긴하지만 여기서도확인
-		if(fromPage.contains("loginForm.jsp")) fromPage = "/HelloWeb/index.jsp";
-		
-		request.setAttribute("from", fromPage);
-		// pass the request along the filter chain
+	    
+	    //1.없으면
+	    if(request.getParameter("to")==null) {
+	    	
+	    	//레퍼러로 보냄
+	    	String 
+	    	//리다이렉트하면서 다른 패러미터를 붙여서 보냄.
+	    	
+	    } 
+	    
+	    //2.있으면 통과
 		chain.doFilter(request, response);
+	}
+	
+	String getParameters(Map<String, String[]> parameterMap) {
+		String parameters = "";
+    	for(String parameter : parameterMap.keySet()) {
+    		if(!(parameters.equals("to")))
+    	    parameters += parameter+"="+parameterMap.get(parameter)[0];
+    	}
+    	return parameters;
 	}
 
 	/**

@@ -33,7 +33,7 @@ public class LogoutAction extends HttpServlet {
 		request.getSession().invalidate();
 		//오류상태면 인덱스로
 		if(request.getHeader("status code")!=null && Integer.parseInt(request.getHeader("status code"))>300) {
-			response.sendRedirect("/HelloWeb/index.jsp");
+			response.sendRedirect("/index.jsp");
 		} else {
 			//아니면 이전화면으로
 		response.sendRedirect(request.getHeader("referer"));

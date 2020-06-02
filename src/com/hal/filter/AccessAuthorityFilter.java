@@ -17,7 +17,7 @@ import javax.websocket.Session;
  */
 @WebFilter("/AccessAuthorityFilter")
 public class AccessAuthorityFilter implements Filter {
-
+	final int loginRequired = 3;
     /**
      * Default constructor. 
      */
@@ -43,19 +43,17 @@ public class AccessAuthorityFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 	    HttpServletResponse response = (HttpServletResponse) res;
 	    
-	    final int loginRequired = 3;
-	    System.out.println("액세스리퀘스트"+request.getRequestURI());
-	    System.out.println("/HelloWeb/".length());
-	    //세션에 아이디가 없으면 로그인하라고 로그인폼으로 보냄.
-	    if(request.getSession().getAttribute("id")==null) {
-	    	String fromPage = request.getParameter("from")!=null?request.getParameter("from"):request.getRequestURI().substring("/HelloWeb/".length());
-	    	System.out.println("액세스 프롬ㅍㅔ이지:"+fromPage);
-	    	System.out.println(".의인덱스"+fromPage.indexOf('.'));
-	    	//어디서 왔는지를 붙여줌
-	    	response.sendRedirect("loginForm.jsp?from="+fromPage+"&code="+loginRequired);
+	    //로그인이 필요한 페이지 앞에서, 로그인 상태인지 확인하고 아니면 돌려보내는 필터.
+	    //페이지를 확장자없이 이름만 떼어냄
+	    String sendTo = request.getRequestURI().substring("/pages/".length(), request.getRequestURI().length()-4);
+	    System.out.println("액세스센투"+sendTo);
+	    	    
+	    //1.세션에 아이디가 없으면 
+	    //로그인하라고 오류코드 붙여서, 원래 가려고요청한 곳이 어딘지를 붙여서 로그인폼으로 보냄.
+	    if(request.getSession().getAttribute("id")==null) {	    	
+	    	response.sendRedirect("loginForm.jsp?code="+loginRequired+"&to="+sendTo);
 	    } else {
-	    	
-	    //세션에 아이디가 있으면 리퀘스트 통과~~~~		    
+	    //2.세션에 아이디가 있으면 리퀘스트 통과	    
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	    }

@@ -24,15 +24,15 @@ body {
   text-align: center;
   border-bottom: 100px solid #f14040;
   box-sizing: border-box;
+  font-family: "GmarketSansMedium";
+  font-weight: 600;
+  color: black;
 }
 
 .center-contents {
   position: relative;
   text-align: center;
   top: -10%;
-  font-family: "GmarketSansMedium";
-  font-weight: 600;
-  color: black;
 }
 
 h1 {
