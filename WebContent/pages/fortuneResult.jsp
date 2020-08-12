@@ -36,8 +36,8 @@
    	<link rel="shortcut icon" href="../favicon.ico" type="image/icon">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>ㅇㅣ해리의 웹 나라 - <%=loggedIn?id:"소환사" %>님의 운세 결과</title>
-	<link rel="stylesheet" type="text/css" href="../assets/style/style.css" />	
+	<title>ㅇㅣ해리의 웹 나라 - <%=loggedIn?loggedInUser.getUserid():"소환사" %>님의 운세 결과</title>
+	<link rel="stylesheet" type="text/css" href="../assets/style.css" />	
   </head>
   <body>
 	<div class="center-contents">

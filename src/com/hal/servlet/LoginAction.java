@@ -8,13 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hal.dao.Dao;
+import com.hal.dao.User;
+import com.hal.dao.UserDao;
+
 /**
  * Servlet implementation class LoginAction
  */
 @WebServlet("/LoginAction")
 public class LoginAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	final static int loginFailed = 1;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -28,39 +32,63 @@ public class LoginAction extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
-		String id = request.getParameter("id");
+		Dao userDao = (Dao)UserDao.getInstance();
+		String id = request.getParameter("userid");
 		String pwd = request.getParameter("pwd");
 		
-		//코드로 어디서왔는지 받아둠
-		
-		String sendTo = request.getParameter("to");
-		System.out.println("로긴액션:프롬페이지:"+sendTo);
-		
-		//오류코드. 코드가많아지면 이넘을쓰면될랑가?
-		final int loginFailed = 1;
-		
-		//먼저 널검사.
-		if(id == null || id==null ) {
-			System.out.println("로긴액션1");
-			response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+(sendTo.length()==0?"":"&to="+sendTo));
+		//코드로 어디서왔는지 받아둠		
+		String sendTo = getSendTo(request);
+		System.out.println("===login===");
+		System.out.println("id:"+id);
+		System.out.println("pwd:"+pwd);
+		System.out.println("to:"+sendTo);
+
+		//먼저 널검사. 건너온 id,비번이 널이거나, 혹은 id로 회원이없을때.
+		if( id==null || pwd==null || userDao.selectData(id)==null ) {
+			System.out.println("1");
+			loginFailed(response, sendTo);
 		} else {
-			//걸릴 확률 높아보이는 것부터 먼저 검사. 틀렸을때 or
-			if(!id.equals("asdf") || !pwd.equals("1234")) {
-				System.out.println("로긴액션2");
-				response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+(sendTo.length()==0?"":"&to="+sendTo));				
+			//걸릴 확률 높아보이는 것부터 먼저 검사. 로그인 아디비번 맞지않을때
+			if(!loginCheck((User)userDao.selectData(id), pwd)) {
+				System.out.println("2");
+				loginFailed(response, sendTo);				
 			} else {
-				//로그인 성공시 왔던 곳으로 돌려보냄
-				System.out.println("로긴액션3");
-				if(request.getParameter("rememberId")!=null) {
-					System.out.println("리멤버는"+request.getParameter("rememberId"));
-					response.addCookie(new Cookie("id", id));
-				}
-				request.getSession().setAttribute("id", "asdf");
-				System.out.println("로긴액션 세션아이디:"+request.getSession().getAttribute("id"));
-				response.sendRedirect("pages/"+sendTo+".jsp");
+				//Login Success
+				System.out.println("3");
+				rememberMeCheck(request, response, id);
+				setLoggedInSession(request, (User)userDao.selectData(id));
+				redirectLoggedInUser(response, sendTo);
 			}		
 		}
+	}
+
+	private String getSendTo(HttpServletRequest request) {
+		String sendTo = request.getParameter("to");
+		if(sendTo==null || sendTo.length()==0) sendTo = "index";
+		return sendTo;
+	}
+
+	private void redirectLoggedInUser(HttpServletResponse response, String sendTo) throws IOException {
+		response.sendRedirect(sendTo+".jsp");
+	}
+
+	private void setLoggedInSession(HttpServletRequest request, User user) {
+		request.getSession().setAttribute("loggedInUser", user);
+	}
+
+	private void loginFailed(HttpServletResponse response, String sendTo) throws IOException {
+		response.sendRedirect("pages/loginForm.jsp?code="+loginFailed+"&to="+sendTo);
+	}
+
+	private void rememberMeCheck(HttpServletRequest request, HttpServletResponse response, String id) {
+		if(request.getParameter("rememberId")!=null) {
+			System.out.println("리멤버는"+request.getParameter("rememberId"));
+			response.addCookie(new Cookie("id", id));
+		}
+	}
+
+	private boolean loginCheck(User user, String pwd) {
+		return pwd.equals(user.getPwd());
 	}
 
 	/**
@@ -70,5 +98,5 @@ public class LoginAction extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
+	
 }

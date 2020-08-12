@@ -1,12 +1,329 @@
+<%@page import="com.hal.dao.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" session="true"%>
 <%
-String id = (String) session.getAttribute("id");
-boolean loggedIn = id==null? false:true;
+User loggedInUser = (User) session.getAttribute("loggedInUser");
+boolean loggedIn = loggedInUser==null? false:true;
+System.out.println(loggedInUser);
 %>
 <link rel="shortcut icon" href="../favicon.ico">
 <link rel="icon" href="../favicon.ico">
- 
+<style>
+@font-face {
+  font-family: "Recipekorea";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/Recipekorea.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GmarketSansMedium";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #fdf5d0;
+  margin: 0px;
+  text-align: center;
+  border-bottom: 100px solid #f14040;
+  box-sizing: border-box;
+  font-family: "GmarketSansMedium";
+  font-weight: 600;
+  color: black;
+}
+
+.center-contents {
+  position: relative;
+  text-align: center;
+  top: -10%;
+}
+
+h1 {
+  font-size: 3em;
+  color: rgb(204, 48, 0);
+}
+
+h4 {
+  font-size: 1em;
+}
+
+.header {
+  font-family: "Recipekorea";
+}
+.logo {
+  position: relative;
+    top: 1vh;
+    left: 1vw;
+    width: 310px;
+    height: 310px;
+    background-color: #ff4700;
+    border-radius: 50%;
+}
+
+.logo-title {
+  top: 90px;
+  position: relative;
+  font-size: 3.5em;
+  color: #fff;
+}
+
+nav {
+  z-index: 10;
+  display: block;
+  position: fixed;
+  right: 0px;
+  width: 600px;
+  height: 600px;
+  user-select: none;
+  transform: translate3d(25px, -25px, 0);
+  transition: transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 0.9);
+}
+nav.open {
+  transform: translate3d(0, 0, 0);
+}
+nav.top-right {
+  top: -210px;
+  right: -210px;
+}
+
+.disc {
+  position: absolute;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+  padding-top: 10px;
+  border-radius: 300px;
+  transform: scale3d(0.5, 0.5, 0.5) rotate3d(0, 0, 1, 190deg);
+  pointer-events: none;
+  opacity: 0;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 0.9), opacity 0.5s;
+}
+.disc div {
+  transform: rotate(180deg);
+}
+.open .disc {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.l1 {
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: rgb(255, 71, 71);
+  transition-delay: 0s;
+}
+.open .l1 {
+  transition-delay: 0s;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 190deg);
+  opacity: 1;
+}
+.open .l1:hover {
+  background: shade(rgb(255, 71, 71), 90%);
+  color: rgb(255, 71, 71);
+  transition-delay: 0s;
+}
+.open .l1:active {
+  background: shade(rgb(255, 71, 71), 50%);
+  color: rgb(255, 71, 71);
+}
+.open .l1.toggle {
+  transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, 10deg);
+}
+
+.l2 {
+  top: 50px;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
+  background: tomato;
+  transition-delay: 0.1s;
+}
+.open .l2 {
+  transition-delay: 0.1s;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 190deg);
+  opacity: 1;
+}
+.open .l2:hover {
+  background: shade(tomato, 90%);
+  color: tomato;
+  transition-delay: 0s;
+}
+.open .l2:active {
+  background: shade(tomato, 50%);
+  color: tomato;
+}
+.open .l2.toggle {
+  transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, 10deg);
+}
+
+.l3 {
+  top: 100px;
+  left: 100px;
+  right: 100px;
+  bottom: 100px;
+  background: #ff7a39;
+  transition-delay: 0.2s;
+}
+.open .l3 {
+  transition-delay: 0.2s;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 190deg);
+  opacity: 1;
+}
+.open .l3:hover {
+  background: shade(#ff7a39, 90%);
+  color: #ff7a39;
+  transition-delay: 0s;
+}
+.open .l3:active {
+  background: shade(#ff7a39, 50%);
+  color: #ff7a39;
+}
+.open .l3.toggle {
+  transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, 10deg);
+}
+
+.l4 {
+  top: 150px;
+  left: 150px;
+  right: 150px;
+  bottom: 150px;
+  background: #ff912b;
+  transition-delay: 0.3s;
+}
+.open .l4 {
+  transition-delay: 0.3s;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 190deg);
+  opacity: 1;
+}
+.open .l4:hover {
+  background: shade(#ff912b, 90%);
+  color: #ff912b;
+  transition-delay: 0s;
+}
+.open .l4:active {
+  background: shade(#ff912b, 50%);
+  color: #ff912b;
+}
+.open .l4.toggle {
+  transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, 10deg);
+}
+
+.l5 {
+  top: 200px;
+  left: 200px;
+  right: 200px;
+  bottom: 200px;
+  background: #ffa91c;
+  transition-delay: 0.4s;
+}
+.open .l5 {
+  transition-delay: 0.4s;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 190deg);
+  opacity: 1;
+}
+.open .l5:hover {
+  background: shade(#ffa91c, 90%);
+  color: #ffa91c;
+  transition-delay: 0s;
+}
+.open .l5:active {
+  background: shade(#ffa91c, 50%);
+  color: #ffa91c;
+}
+.open .l5.toggle {
+  transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, 10deg);
+}
+
+.l6 {
+  top: 250px;
+  left: 250px;
+  right: 250px;
+  bottom: 250px;
+  background: #ffc00e;
+  transition-delay: 0.4s;
+}
+.open .l6 {
+  transition-delay: 0.4s;
+  transform: scale3d(1, 1, 1) rotate3d(0, 0, 1, 190deg);
+  opacity: 1;
+}
+.open .l6:hover {
+  background: shade(#ffc00e, 90%);
+  color: #ffc00e;
+  transition-delay: 0s;
+}
+.open .l6:active {
+  background: shade(#ffc00e, 50%);
+  color: #ffc00e;
+}
+.open .l6.toggle {
+  transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, 10deg);
+}
+
+.toggle {
+  line-height: 100px;
+  padding: 0;
+  width: 100px;
+  background: #ffc800;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+.open .toggle {
+  transform: rotate3d(0, 0, 1, 0deg);
+}
+.toggle:hover {
+  background: shade(gold, 90%);
+  text-decoration: underline;
+}
+.toggle:active {
+  background: shade(gold, 50%);
+  color: rgba(255, 215, 0, 0.5);
+  transform: scale(0.9);
+  transition-duration: 0s;
+}
+
+.header a {
+  text-decoration: none;
+  color: white;
+}
+
+button {
+  font-family: "GmarketSansMedium";
+  border: none;
+  border-radius: 4px;
+  background-size: 500% 100%;
+  -webkit-transition: all ease 0.3s;
+  -moz-transition: all ease 0.3s;
+  transition: all ease 0.3s;
+  color: #fff;
+  font-size: 20px;
+  width: 140px;
+  height: 40px;
+  margin-bottom: 10px;
+  background: rgb(255, 0, 0);
+  cursor: pointer;
+}
+
+textarea:focus,
+input:focus,
+button:focus {
+  outline: 0;
+}
+</style>
 <div class="header">
 	<div class="logo">
 		<a class="logo-title" href="index.jsp">ㅇㅣ해리의 웹 나라</a>
@@ -14,7 +331,7 @@ boolean loggedIn = id==null? false:true;
 	<nav class="top-right">		
 			<%=loggedIn? "<a class=\"disc l1\" href=\"../LogoutAction\"><div>Log out</div></a>":
 				"<a class=\"disc l1\" href=\"loginForm.jsp\"><div>Log in</div></a>"%>
-			<%=loggedIn? "<a class=\"disc l2\" href=\"myInfo.jsp\"><div>나의 정보</div></a>":
+			<%=loggedIn? "<a class=\"disc l2\" href=\"userInfo.jsp\"><div>나의 정보</div></a>":
 				"<a class=\"disc l2\" href=\"signupForm.jsp\"><div>Sign up</div></a>"%>
 		</a> <a class="disc l3" href="board.jsp">
 			<div>Board</div>
@@ -25,4 +342,19 @@ boolean loggedIn = id==null? false:true;
 		</a> <a class="disc l6 toggle"> Menu </a>
 	</nav>
 </div>
-<script src="../assets/js/header.js"></script>
+<script>
+	toggle = document.querySelectorAll(".toggle")[0];
+	nav = document.querySelectorAll("nav")[0];
+	toggle_open_text = 'Menu';
+	toggle_close_text = 'Close';
+	
+	toggle.addEventListener('click', function() {
+		nav.classList.toggle('open');
+		
+	  if (nav.classList.contains('open')) {
+	    toggle.innerHTML = toggle_close_text;
+	  } else {
+	    toggle.innerHTML = toggle_open_text;
+	  }
+	}, false);
+</script>
